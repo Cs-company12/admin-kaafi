@@ -212,9 +212,9 @@ select.in{padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmln
 .pprev .phx{font-size:28px}
 .pactions{display:grid;gap:6px;justify-items:start}
 .pactions .hint{font-size:12px;color:var(--muted);margin:2px 0 0}
-.photo-zoom{width:100%;max-width:220px}
-.photo-zoom label{display:flex;justify-content:space-between;gap:8px}
-.photo-zoom input{width:100%;accent-color:var(--navy)}
+.photo-position{width:100%;max-width:220px}
+.photo-position label{display:flex;justify-content:space-between;gap:8px}
+.photo-position input{width:100%;accent-color:var(--navy)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg);border-radius:12px;padding:12px 14px;cursor:pointer}
 .toggle b{display:block;font-size:14px}
@@ -353,7 +353,7 @@ select.in{padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmln
         <div class="pprev" id="pprev"></div>
         <div class="pactions">
           <label class="btn btn-light"><i class="bi bi-camera-fill"></i> Dooro sawir<input type="file" id="photoInput" accept="image/*" hidden></label>
-          <div class="field photo-zoom" id="photoZoomControl" hidden><label for="photoZoom">Cabbirka sawirka <output id="photoZoomValue">100%</output></label><input id="photoZoom" type="range" min="100" max="250" step="5" value="100"></div>
+          <div class="field photo-position" id="photoPositionControl" hidden><label for="photoPosition">Meesha sawirka <output id="photoPositionValue">20%</output></label><input id="photoPosition" type="range" min="0" max="100" step="5" value="20"></div>
           <button type="button" class="btn btn-danger-text" id="photoRemove"><i class="bi bi-x-circle"></i> Ka saar sawirka</button>
           <p class="hint">Sawirka si toos ah ayaa loo jarayaa (4:5) oo loo yareeyaa si uu si qurux badan ugu muuqdo bogga dadweynaha.</p>
         </div>
@@ -958,7 +958,7 @@ function openDoc(d){
   editing = d || null; newPhoto = null; removePhoto = false;
   photoSource = null; photoResizeId++; photoProcessing = false;
   $('#docSave').disabled = false; $('#photoRemove').disabled = false;
-  $('#photoZoomControl').hidden = true; $('#photoZoom').value = 100; $('#photoZoomValue').value = '100%';
+  $('#photoPositionControl').hidden = true; $('#photoPosition').value = 20; $('#photoPositionValue').value = '20%';
   if (newPhotoURL) { URL.revokeObjectURL(newPhotoURL); newPhotoURL = null; }
   $('#docModalTitle').textContent = d ? 'Wax ka beddel dhakhtarka' : 'Dhakhtar cusub';
   $('#dName').value = d?.full_name || 'Dr. ';
@@ -990,7 +990,7 @@ $('#dName').addEventListener('input', () => { if (!newPhotoURL && !(editing?.pho
 $('#photoRemove').addEventListener('click', () => {
   photoSource = null; photoResizeId++; photoProcessing = false;
   $('#docSave').disabled = false; $('#photoRemove').disabled = false;
-  $('#photoZoomControl').hidden = true; $('#photoZoom').value = 100; $('#photoZoomValue').value = '100%';
+  $('#photoPositionControl').hidden = true; $('#photoPosition').value = 20; $('#photoPositionValue').value = '20%';
   if (newPhotoURL) { URL.revokeObjectURL(newPhotoURL); newPhotoURL = null; newPhoto = null; }
   else removePhoto = true;
   $('#photoInput').value = '';
@@ -1006,16 +1006,15 @@ function loadImage(file){
   });
 }
 /* crop to 4:5 portrait (bias toward the top for faces) and resize to 640×800 JPEG */
-async function processPhoto(file, zoom = 1){
+async function processPhoto(file, verticalPosition = 0.2){
   const img = await loadImage(file);
   const W = 640, H = 800, target = W / H;
   const iw = img.naturalWidth, ih = img.naturalHeight;
   let sw, sh;
   if (iw / ih > target) { sh = ih; sw = ih * target; }
   else { sw = iw; sh = iw / target; }
-  sw /= zoom; sh /= zoom;
   const sx = (iw - sw) / 2;
-  const sy = iw / ih > target ? 0 : (ih - sh) * 0.2;
+  const sy = (ih - sh) * verticalPosition;
   const c = document.createElement('canvas'); c.width = W; c.height = H;
   const ctx = c.getContext('2d'); ctx.imageSmoothingQuality = 'high';
   ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H);
@@ -1027,7 +1026,7 @@ async function updatePhotoCrop(){
   const request = ++photoResizeId;
   photoProcessing = true; $('#docSave').disabled = true; $('#photoRemove').disabled = true;
   try {
-    const blob = await processPhoto(photoSource, Number($('#photoZoom').value) / 100);
+    const blob = await processPhoto(photoSource, Number($('#photoPosition').value) / 100);
     if (request !== photoResizeId) return;
     newPhoto = blob;
     if (newPhotoURL) URL.revokeObjectURL(newPhotoURL);
@@ -1044,11 +1043,11 @@ $('#photoInput').addEventListener('change', async e => {
   const f = e.target.files && e.target.files[0]; if (!f) return;
   if (!/^image\//.test(f.type)) return swal({icon:'error', title:'Sawir dooro', text:'Fadlan dooro fayl sawir ah (JPG, PNG, WEBP).'});
   photoSource = f;
-  $('#photoZoom').value = 100; $('#photoZoomValue').value = '100%'; $('#photoZoomControl').hidden = false;
+  $('#photoPosition').value = 20; $('#photoPositionValue').value = '20%'; $('#photoPositionControl').hidden = false;
   await updatePhotoCrop();
 });
-$('#photoZoom').addEventListener('input', e => {
-  $('#photoZoomValue').value = `${e.target.value}%`;
+$('#photoPosition').addEventListener('input', e => {
+  $('#photoPositionValue').value = `${e.target.value}%`;
   updatePhotoCrop();
 });
 
