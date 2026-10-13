@@ -231,6 +231,19 @@ select.in{padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmln
 .toast span{font-size:12.5px;color:var(--ink-2)}
 @keyframes tin{from{transform:translateX(30px);opacity:0}to{transform:none;opacity:1}}
 .swal2-popup{font-family:inherit!important;border-radius:18px!important}
+.tab .lk{font-size:11px;opacity:.7}
+.soundbar{position:sticky;top:62px;z-index:29;width:100%;border:0;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:10px 16px;background:var(--amber-l);color:var(--amber);font-weight:700;font-size:14px;cursor:pointer;border-bottom:1px solid #F2D9A6}
+.soundbar i{font-size:18px}
+.soundbar[hidden]{display:none}
+@media (min-width:720px){.soundbar{top:114px}}
+@media (max-width:719px){.tab .lk{position:absolute;margin:-26px 0 0 -30px}}
+.paycard{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:16px;display:grid;gap:14px;max-width:520px}
+.paynow{display:grid;gap:4px;background:var(--navy-l);border-radius:14px;padding:14px 16px}
+.paynow span{font-size:12.5px;font-weight:700;color:var(--ink-2)}
+.paynow b{font-size:30px;letter-spacing:.04em;color:var(--navy);line-height:1.1}
+.paynow code{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:14px;color:var(--ink);background:#fff;border-radius:8px;padding:4px 8px;justify-self:start}
+.paycard .hint{margin:-6px 0 0;font-size:12.5px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -238,7 +251,7 @@ select.in{padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmln
 <!-- ============ AUTH VIEW ============ -->
 <section class="auth" id="authView" hidden>
   <div class="auth-card">
-    <img class="logo" src="data:image/png;base64,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" alt="Kaafi Hospital">
+    <img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAABIFBMVEXa1+bemaC2JjFnZ2exsd3y396jn7LLJC8AAFufqLrpwrw6Q31bYKG6XVzENUbjvcWu19f//7kAAP+ZmMLFV1tBPX5mZpm/77/Vgn7lrKwgHn4bHoJAP4d///+wL0KBfqaqqlW+zuX+/v0AAAAwN4/+/v4nK4fp6e85QpQlKXlTV5LW2OVGSYy2uM+FiLHGyNmTl7h0eKinqcf+/v4vNXv+/v3///5laJv6+vn8/Pvmp6Y5QaLVBA9naaPMZ3D+/v4cI3RcYpbUlZg2PKHPhorifIPP093w2NedobyXmsLUdnnd4eq9wdXKy+GdosTXe4PoyMh8gq3LW2Xm5ui9vb3ouboaHHK4OkiqqqodJYJvcZq3R03GR1DW2NbZqKratrdTkbaCAAAAYHRSTlMS//8CB////wII//7+////CAMB///9BQb/BP///wL//wP//gD+A/3+/v7+/v7+/v/+/v7P/m6t/iVK/////v+R//7//////////v///v/+///+/xIG////BP7///8N//86cCfjAAAOiElEQVR42r1bB3fbOBKmneLUzdbb3esHQwQBdoqS7OjUdbZlyYp7Eqf9/39xMwBIUYUUZTvGe3mRIZHzYRoGMxhj99ajkhm3f4txW9qXWaryz8rDAMis99LYk8O4XP7uOwHQBJ7v7dc69Xq1SuSoVuv1Tm1/73nmJ98DgHpzZb9WB8LMtifRaOTBGE0j3x4zAFKv7Vdmv7xnAPjSZ3tInE2CUFjUnBvUEeGRL0HsPdsEglGe9Xs1IO57AkhTGBYMqob6hNMisBmp1vbKi8IoufhH+3VC3JaFVAZUkjNT2nGs/4Bp6oQuIfX9v5Rkg1GK/AUs3g4trmhIfntHrn8Aomdj+2DiBl4oHPzGQtk4ng1suCgFYS2AD/AbIO/2YHFNXCHKmpEVg/lBC0BQ+JlJGy5AMOTjdwIAS3gO5CMhWWzGvcAnRYO5nohN5BMXCOHxWiYUA4CH94G8g680UcNIieGfwe/xAYSwL19ySwAA/qJDfMHxbfGNS8oOFvVihMB7NulcFDPBWLN8FoLoBzQOD8hGw29QaS7eOiYYBfSNDnGR+ybdlDyOSQttwnQmpGMUIDAK6FdJKLnf8Mmthiuk7oSkupePwMgV/z6xUZlMJyK3Hp5SRkb2cxXByKNfIxFaNA8ZucPwJROoS2p5CIzV9J91iMeBvhWRO45AOqaAdB6tRmCsFP9lnTTA75rCJnceroMGeUbqv69UBGPV+oG+4NaAh+Q+hi3MAYiS1B+v4oGxgv6PQN9s0jgofK0bhC0hWi0vWsumm5havEHqxgoExgr9U/Rpgec78RzexU0RtkDOOQ3XeEnQJ8sEBM+WESwD2O2QHq4//52R4Fx4ri3tg9l+0Ii7TlBoLQFoNCDo7K4FgPbXAJnFk3zLusb9fm6MR4IX+wtAYIEe1JYQGIv094FfVj7/GTjHlYuNnG7PLkZAeYAeqQjAh12DRJwOcvl/IK5zPdOIx0Wq4JkWytVYiFGMeQU0qn4MNjPN22DiuIDRvsOLDCcEzsZ2dcEUjEUFBLfBvTyfwp3CfYmJQgQCfKJYVERjQQEaZjPu5a0wttaYPGt0pwXfwuJMb0ENjKwAvlQjEJSTI2SbxmvDAuBBgR74EKTwSfVLVgjGnAAYHVi5mtQzfaKxMf0vpav/f0LG1ssChxDg+uaFYCwIAHmU8/B1AEKQ20MDQL7Z3kpZ07CE1I2rnT5xu2GhGiwKwchsAVUXAIo8AcQCjJ07uN7YPCJv//u/5BuHCyW3rf++A3PrFgjBBiHMW4KRdYEOfO3nGpGPZnAmP3+MZgCAvqe+hbljgAeaXiyEXtYhGhkXEJhNM49/ttlCd3ctlTzqzgDYzkcPtYslAMjo2i0UAuVuhgUJgMvdGsPjpZ27n/kSwAj/mM4A2Oh8XMqlf1IAGG0UxSfgkgWw4HIeQOVRBRhg5fsRR/LV5y2phF1fAzixJH3tHxUAcsaL3EUDPJ1bvXhUmQPwk2JAngsAygpao3t2YHu8RxQAH+lHZmK5b1EJYbY7KopTTcWCP7MAKpUPyAAzyI8obB1edSntYqiIq/Vf8l+Afrp1agDEKpIBaZnIgiQ+M1IfACZg5foQ4aRqbFkS5tvtqxPctWCbTQ0nAdCihaE6sLqR+gIjCcPcAh9ECJ1Zh6OwfLv6D6oe8A3oHx7OARjxQp/dAwR2XR8UFIDdPfIKPUSu/5htkMzRiuLj1hx0nRP43B/OAXC7hdERbDjwPn1c0wBqYzgF5EvO57M3OpYiEsOcxx0AzZ4ct7NWQA74qHDHAmk7iTNSAB5VR+CE3ALjdRcAuDGoXtAVY/j89XX7/DTLAbswLJDBEajhoxQASkAU2OAKALB+mHGo/XU4HJ5/bp9vv+0P++2dcgBQDUMtAwWgBpuEGZKSABj8HU9ePCU9Hh2evjhlx+1h+33/9HRYkgNyuVoGhrKB6KNVdBBZ0AFm0TdPtsEPUAWs32asT8hsfyjWASWDE2UHCGC3Av6xSAJzSwIAPmyKyhPGEvbpt8QPKACT7ppDtQ/HlIBc7CYA9mFJhTsIi8MsgBOwIkUMtpaM7SYAou6anAragVC+SAKo+UVuWApNzHMgAYAhir0EIKTrshot8DpKCSSA+pFJzULQYTxeDQBc4Ux2yZwj1qYt4PSJSqCs4KIamoUqgKyOVopA7lOiJUI7A+DADNambujAnFYfSysAL8DALHrFQqOtPACwu5m0K1VBzwV8bVoNlUB5AgSwj6HiWfETYbpRLAKAd7kskLGwnlsvAekJlBYigNrBOh0kUuwpgIMsAB9pq0hUuWL3b9P1AEK0+5oG0JkAgHWZ4FbCAmHJzXEWFccQybtmTwIYale5PoMIcZHdgUgMAdTxQHayTm2SlNWNGb66zoTl5Kb7KrSkkm7tHGNQXCa1ByRNjAl2IT6u1AOTWuO1TNMHDltwxHK1PUxPpDGnUoLfYE4eYEok7+CI5GPezMCcsLfOCiUdKxGCL+Od09kTtq/hXzEieKnMsg8AIrBDBFBBN1AC9oSL9cINr4/KJQ9h+51WLySAPbDkMgBI9NfWWt26LpncRAABOgIFgJYCABFQr5gHZ2Xp445uehsDwBj0oDA/Ujq5uwDALAmARHE8zc9Kd73yZSUnCyAsDQCM8PrVSjW3Q5OWL2vdHgCIIeYNd1EV/JBvVtrIikCaoVP+2bEXc+fMTeMQNgnAN7U2KyzhOSTQZvgFHZG1EfwRUOSOCGG0nBg+/rJpZcMGRzStfkEA2hVv+AY78hoOjWOsY0e3qKqhJ3TrQFxvRvm5oWJW3LqihZuRjMn0dtw0XfKgI1DbcRKQSL/4oAPjgTQgkSGZ97AAWhgRJSGZDEobD0ofg9KWDkplWL7iZPY0SCojfjANZlcHJu6SG8pOjV34Kxk+Vtfcg5zNsPrj7uxgMlgyA/FRhxZRTLtxustHnC7WE+F8xm/S77s0HabAGH1V+QETQm49ezRrLmkhnFdPdJGI9sZzVYeFtL3A8rA/A6BvFsH/CODjqnP/GTzCapnD6Yr0gJAv9R2Txl7WfAZ0QWEi3qSzg43vZUYg/3ZzEgSzwykcz5ejQviNDTsPpS/drPIMqOfMF9Xgh2cO3WQrJCofkh7PQQmmEJj7SwBcZL8znvcfAm04s3lOEXuQhjQHwZEagYrOVyphpFWgkknRLGUJBR2oq1rR3CYaR2RsUf40u7FHBAxZ5zCia3277KNCFPAVNXDwAloFkiQVE0tRmUA1dkAVMzUcT4l/fHJiz/EEbzGpYB0CflBSxM3V+0YrfNxY5kNmSardyr9hR140xB614gbDKk76hf0SYIaNFu7CbsoTmGrhVMNVBkYFSuCpFsEqAJipjDJpOiWDwYIdCPUk8GYQawRneJ9K/dMMVnVefblNaABz7xmZywDETAKzVC1M/p0tZHRPVCWO0t8kew9mLgbPNUqdB+lUUyoGALhZA8AHsWJy4Ke5ZHW06It6iXOxHW0K4LAbthqeVpmz2VSg3LlL5zkQLIsgBAn4c8nqJFE2d/RKXTGK3nRs8Lhmeu5jjolwT0w6OwoK86OH8p3POQem+a/F+luaIssULDAwtHj2YB2EYaLqfq8lnpJAiNlanoreDYOp3mzKlVNu9ldyViw4+YBTPJfOFSySko14iJ3YUnna35eKVmfgnp4+RCxkmaNqZaFohWU7lE1mQ/BPAe2V/uPru35SNu4ff1WfTvv9vqqUMJWq/dp/u6V/liRviX+4vA3I7NDlUuHyArSgmckJt4/hPf98Ij+ff+6fv1evev3r8L0qT7R3/mi/l3WCF58kjGF759dj9avP2+pB8rq/ZAJNPs0U0LOlW4YuNPWx7SEhh4rq1g8IQpI93D4EJshltrdgUubnrz7rZxQemPj1XCdwzvtLqZlZtWSheG1Uj2BnT23o+PO7d+0fDhNmkLc/KFzbx281wvbhi/eyhP7mkxbPey2y860Xn1cCAK+Wrdktle/x6ygF0O+/ywJ4r9Wh/cO5hvL605CtAvBke+vFzhsNZUEDm2ZrdfleXmDw+UwIUgQKQB8JtCXZU5zdlpxu/5G89kUC4JMCsLXTbu+o+lV7DoCLQmY5FxgSPUycwTkq4bbSqU+f+8dKvuzTeb+t2Nt+l7z3SjOHbSsAKJgrpYavXw/fHWZiB9wGv/yjkn+JRaSRybdvJFE3VPDkNfBxqDT8a2Jq5DBZZl9+w7bkbQb5ABa1DmdxblPWTH8suMaDZsqj7+SCQMdfFl3jkULAGDf2vwd9TAhzv/Ai0+4HCAzAI2+cLSiXEaBY7C+8yqXUAC/zifG9049Bu87WXWZTDtHBK1fsnukDW83e+ut86jrTb/eOAPjfNEWZC40yPLORXY59v/I3HVLfLXGlE69zIIImde7NFiK8YO2w+ocyl1rVtV7botZmx73C1CasX5D6ZblrvagGz+u2A7bA7yNvw2641L/687IXm9XVboZXe83enRUBzvcWnnk6z8pf7daX2+Xd/rteLg/k/fpgw8vt+np/hKpIW3dggr5cP9n4er86rlVt1V8R3NIlMNVe0GBVY+MGB4ngS4fhnWw4aN9GDizQ8G/Z4qGbXDBHNJBNQxuSnwrsT+AN+9ZNLlIRKh02oijHWEw3EIQdqNYkUOE7tPnMOn3gTWCSjlfONTIXHgC2Iffv1uiUtnrZIU16rU7WUsd+QJnD8Fi19vyOrV4wHsteOwmhOZC9bpGdIwzmH4WOhArsCoD8l7s3u+l2vwpAGGEXG/IBQXjRJAtjfOAeearVTvYc9lwgX7mfdj8N4c/9OvZVaBKyu9JyxKsWjFfCsfSMpI49cffZ8Jh2se7VqswPko5PatHsGAxknspq/GKrls+f77Hlc9b3iU2v9iRoOGlCWifIZL9pOD1h36npdbHtl9m+G3lhqyFHGAaR69vs+7b9ZhufK6sbn43v3Pi81N5tVFTrd8V4sNbvueb3n2d///yAze/33f7/f2kqWydiBvjKAAAAAElFTkSuQmCC" alt="Kaafi Hospital">
     <h1 id="authTitle">Admin — Kaafi Hospital</h1>
     <p class="sub">Gal si aad u aragto ballamaha bukaannada</p>
 
@@ -259,17 +272,20 @@ select.in{padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmln
 <div id="appView" hidden>
   <header class="top">
     <div class="wrap top-in">
-      <div class="brand"><img src="data:image/png;base64,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" alt=""><div><b>Kaafi Admin</b><small id="whoami"></small></div></div>
+      <div class="brand"><img src="data:image/png;base64,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" alt=""><div><b>Kaafi Admin</b><small id="whoami"></small></div></div>
       <span class="live" id="live" title="Xiriirka realtime"><i></i><span class="live-txt">Toos</span></span>
       <button class="icon-btn" id="notifBtn" title="Ogeysiisyada" aria-label="Ogeysiisyada"><i class="bi bi-bell"></i></button>
       <button class="icon-btn" id="logoutBtn" title="Ka bax" aria-label="Ka bax"><i class="bi bi-box-arrow-right"></i></button>
     </div>
   </header>
 
+  <button class="soundbar" id="soundBar" type="button" hidden><i class="bi bi-volume-mute-fill"></i> Riix halkan si aad u maqasho muusigga ballamaha cusub</button>
+
   <nav class="tabs">
     <div class="wrap">
       <button class="tab on" data-tab="bookings"><i class="bi bi-people-fill"></i> Bukaannada <span class="badge" id="newBadge" hidden>0</span></button>
-      <button class="tab" data-tab="doctors"><i class="bi bi-person-badge-fill"></i> Dhakhaatiirta</button>
+      <button class="tab" data-tab="doctors"><i class="bi bi-person-badge-fill"></i> Dhakhaatiirta <i class="bi bi-lock-fill lk" data-lock="doctors"></i></button>
+      <button class="tab" data-tab="payment"><i class="bi bi-wallet2"></i> Lacagta <i class="bi bi-lock-fill lk" data-lock="payment"></i></button>
     </div>
   </nav>
 
@@ -309,6 +325,19 @@ select.in{padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmln
       </div>
       <div class="dgrid" id="dgrid"></div>
     </section>
+
+    <!-- PAYMENT NUMBER -->
+    <section id="tab-payment" hidden>
+      <div class="list-head" style="margin-top:4px">
+        <div><h2>Lambarka lacagta</h2><span class="muted" style="font-size:13px">Lambarka EVC Plus ee lacagta ballamaha loo dirayo</span></div>
+      </div>
+      <div class="paycard">
+        <div class="paynow"><span>Lambarka hadda</span><b id="payNow">…</b><code id="payUssd">*789*…*8#</code></div>
+        <div class="field"><label for="payInput">Lambar cusub</label><input class="in" id="payInput" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="Tusaale: 736275"></div>
+        <p class="hint" id="payHint">Bukaanku markuu bixinayo wuxuu wacayaa: *789*LAMBARKA*WADARTA#</p>
+        <button class="btn btn-primary btn-block" id="paySave"><i class="bi bi-check2"></i> Kaydi lambarka</button>
+      </div>
+    </section>
   </main>
 </div>
 
@@ -321,7 +350,7 @@ select.in{padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmln
         <div class="pprev" id="pprev"></div>
         <div class="pactions">
           <label class="btn btn-light"><i class="bi bi-camera-fill"></i> Dooro sawir<input type="file" id="photoInput" accept="image/*" hidden></label>
-          <button type="button" class="btn btn-danger-text" id="photoRemove"><i class="bi bi-trash3"></i> Ka saar sawirka</button>
+          <button type="button" class="btn btn-danger-text" id="photoRemove"><i class="bi bi-x-circle"></i> Ka saar sawirka</button>
           <p class="hint">Sawirka si toos ah ayaa loo jarayaa (4:5) oo loo yareeyaa si uu si qurux badan ugu muuqdo bogga dadweynaha.</p>
         </div>
       </div>
@@ -335,7 +364,7 @@ select.in{padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmln
       <label class="toggle"><div><b>Ka muuji bogga dadweynaha</b><small>Bukaannadu way ballansan karaan</small></div><span class="sw"><input type="checkbox" id="dActive" checked><span></span></span></label>
     </div>
     <div class="mfoot">
-      <button type="button" class="btn btn-danger-text" id="docDelete"><i class="bi bi-trash3"></i></button>
+      <button type="button" class="btn btn-danger-text" id="docDelete" title="Tirtir (password)"><i class="bi bi-trash3"></i></button>
       <span class="sp"></span>
       <button type="button" class="btn btn-ghost" data-close>Jooji</button>
       <button type="submit" class="btn btn-primary" id="docSave"><i class="bi bi-check2"></i> Kaydi</button>
@@ -445,6 +474,9 @@ $('#logoutBtn').addEventListener('click', async () => {
 
 async function logout(){
   if (channel) { sb.removeChannel(channel); channel = null; }
+  try { await sb.rpc('kaafi_lock_sections'); } catch {}
+  unlocked = {doctors:false, payment:false}; paintLocks();
+  if (tab !== 'bookings') switchTab('bookings');
   await sb.auth.signOut();
   me = null; bookings = []; doctors = [];
   $('#lPass').value = '';
@@ -469,6 +501,7 @@ function enterApp(){
   loadDoctors().then(loadBookings);
   subscribe();
   updateNotifIcon();
+  setTimeout(paintSoundBar, 300);
 }
 
 function rangeBounds(){
@@ -500,7 +533,7 @@ function filtered(){
   return bookings.filter(b =>
     (fStatus === 'all' || b.status === fStatus) &&
     (fDoctor === 'all' || b.doctor_id === fDoctor) &&
-    (!q || [b.patient_name, b.patient_phone, b.booking_code, b.district, b.patient_number, b.doctor_name].join(' ').toLowerCase().includes(q))
+    (!q || [b.patient_name, b.patient_phone, b.booking_code, b.district, b.doctor_name].join(' ').toLowerCase().includes(q))
   );
 }
 
@@ -530,10 +563,10 @@ function bookingCard(b){
     <div class="bk-body">
       <div class="pt">
         <span class="av">${esc(initials(b.patient_name))}</span>
-        <div><h3>${esc(b.patient_name)}</h3><p>${esc(b.patient_age)} sano · <i class="bi bi-geo-alt"></i> ${esc(b.district)}</p></div>
+        <div><h3>${esc(b.patient_name)}</h3><p>${esc(b.patient_age)} sano${b.patient_sex ? ' · ' + (b.patient_sex === 'rag' ? 'Rag' : 'Dumar') : ''} · <i class="bi bi-geo-alt"></i> ${esc(b.district)}</p></div>
       </div>
       <div class="tags">
-        ${b.has_patient_number ? `<span class="tag id"><i class="bi bi-person-vcard"></i> ID: ${esc(b.patient_number)}</span>` : `<span class="tag newp"><i class="bi bi-stars"></i> Bukaan cusub (ID ma leh)</span>`}
+        ${b.came_before === true ? `<span class="tag id"><i class="bi bi-arrow-repeat"></i> Horay u yimid: Haa</span>` : b.came_before === false ? `<span class="tag newp"><i class="bi bi-stars"></i> Horay u yimid: Maya</span>` : ''}
         ${b.payment_dialed_at ? `<span class="tag dial" title="Bukaanku wuxuu riixay badhanka lacag bixinta"><i class="bi bi-phone-vibrate"></i> EVC la riixay ${timeFmt(b.payment_dialed_at)}</span>` : ''}
       </div>
       <div class="contact">
@@ -548,7 +581,7 @@ function bookingCard(b){
       <select class="status-sel ${b.status}" data-status="${b.id}" aria-label="Xaaladda">
         ${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${k === b.status ? 'selected' : ''}>${v.so}</option>`).join('')}
       </select>
-      <button class="icon-btn sm red" data-del="${b.id}" aria-label="Tirtir"><i class="bi bi-trash3"></i></button>
+      <button class="icon-btn sm red" data-del="${b.id}" aria-label="Tirtir" title="Tirtir (password)"><i class="bi bi-trash3"></i></button>
     </div>
   </article>`;
 }
@@ -563,6 +596,25 @@ function renderBookings(){
     : `<div class="empty"><i class="bi bi-inbox"></i>Ballan lama helin${range === 'today' ? ' maanta weli' : ''}.<br><small>Ballamaha cusub halkan ayay si toos ah uga soo muuqanayaan.</small></div>`;
 }
 
+/* ---------- delete: always asks the delete password (checked by the database) ---------- */
+async function askDeletePassword(title, html){
+  const r = await Swal.fire({
+    icon: 'warning', title, html: html + '<div style="margin-top:10px;font-size:13px;color:#B81C22"><i class="bi bi-lock-fill"></i> Geli password-ka tirtirka</div>',
+    input: 'password', inputPlaceholder: 'Password',
+    inputAttributes: {autocapitalize:'off', autocorrect:'off', autocomplete:'off'},
+    showCancelButton: true, confirmButtonText: '<i class="bi bi-trash3"></i> Tirtir', cancelButtonText: 'Jooji', confirmButtonColor: '#E1262D',
+    showLoaderOnConfirm: true, allowOutsideClick: () => !Swal.isLoading(),
+    preConfirm: async pw => {
+      if (!pw) { Swal.showValidationMessage('Geli password-ka'); return false; }
+      const {data, error} = await sb.rpc('kaafi_unlock_section', {p_section:'delete', p_password:pw});
+      if (error) { Swal.showValidationMessage(errMsg(error)); return false; }
+      if (!data || !data.ok) { Swal.showValidationMessage((data && data.error) || 'Password-ka waa khalad.'); return false; }
+      return true;
+    }
+  });
+  return r.isConfirmed;
+}
+
 /* booking actions */
 $('#blist').addEventListener('change', async e => {
   const s = e.target.closest('[data-status]'); if (!s) return;
@@ -572,14 +624,17 @@ $('#blist').addEventListener('change', async e => {
   const {error} = await sb.from('kaafi_bookings').update({status:val}).eq('id', id);
   if (error) { b.status = prev; renderBookings(); swal({icon:'error', title:'Lama beddelin', text:errMsg(error)}); }
 });
+
 $('#blist').addEventListener('click', async e => {
   const d = e.target.closest('[data-del]'); if (!d) return;
   const b = bookings.find(x => x.id === d.dataset.del); if (!b) return;
-  const r = await Swal.fire({icon:'warning', title:'Tirtir ballantan?', html:`<b>${esc(b.booking_code)}</b> — ${esc(b.patient_name)}<br><small>Lama soo celin karo.</small>`, showCancelButton:true, confirmButtonText:'Haa, tirtir', cancelButtonText:'Maya', confirmButtonColor:'#E1262D'});
-  if (!r.isConfirmed) return;
-  const {error} = await sb.from('kaafi_bookings').delete().eq('id', b.id);
+  const ok = await askDeletePassword('Tirtir ballantan?', `<b>${esc(b.booking_code)}</b> — ${esc(b.patient_name)}<br><small>Lama soo celin karo.</small>`);
+  if (!ok) return;
+  const {data, error} = await sb.from('kaafi_bookings').delete().eq('id', b.id).select('id');
   if (error) return swal({icon:'error', title:'Lama tirtirin', text:errMsg(error)});
+  if (!data || !data.length) return swal({icon:'error', title:'Lama tirtirin', text:'Waqtigii password-ka wuu dhacay. Isku day mar kale.'});
   bookings = bookings.filter(x => x.id !== b.id); renderBookings();
+  Swal.fire({icon:'success', title:'Waa la tirtiray', timer:1200, showConfirmButton:false});
 });
 
 /* filters */
@@ -597,8 +652,8 @@ $('#fRange').addEventListener('click', e => {
 $('#csvBtn').addEventListener('click', () => {
   const list = filtered();
   if (!list.length) return swal({icon:'info', title:'Wax la soo dejiyo ma jiro'});
-  const head = ['Koodh','Taariikh','Saac','Bukaan','Da\'','Taleefan','Degmo','Patient ID','Dhakhtar','Takhasus','Lacag dhakhtar','Khidmad ballan','Wadar','Xaalad','EVC la riixay'];
-  const rows = list.map(b => [b.booking_code, new Date(b.created_at).toLocaleDateString('en-GB'), timeFmt(b.created_at), b.patient_name, b.patient_age, b.patient_phone, b.district, b.has_patient_number ? b.patient_number : 'Cusub', b.doctor_name, b.doctor_specialty, num(b.doctor_fee), num(b.booking_fee), num(b.total), (STATUS[b.status] || {}).so, b.payment_dialed_at ? timeFmt(b.payment_dialed_at) : '']);
+  const head = ['Koodh','Taariikh','Saac','Bukaan','Da\'','Taleefan','Degmo','Jinsi','Horay u yimid','Dhakhtar','Takhasus','Lacag dhakhtar','Khidmad ballan','Wadar','Xaalad','EVC la riixay'];
+  const rows = list.map(b => [b.booking_code, new Date(b.created_at).toLocaleDateString('en-GB'), timeFmt(b.created_at), b.patient_name, b.patient_age, b.patient_phone, b.district, b.patient_sex === 'rag' ? 'Rag' : b.patient_sex === 'dumar' ? 'Dumar' : '', b.came_before === true ? 'Haa' : b.came_before === false ? 'Maya' : '', b.doctor_name, b.doctor_specialty, num(b.doctor_fee), num(b.booking_fee), num(b.total), (STATUS[b.status] || {}).so, b.payment_dialed_at ? timeFmt(b.payment_dialed_at) : '']);
   const csv = '﻿' + [head, ...rows].map(r => r.map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',')).join('\r\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
@@ -630,26 +685,117 @@ async function subscribe(){
     .subscribe(status => { $('#live').classList.toggle('on', status === 'SUBSCRIBED'); });
 }
 
+/* ---------- sound: a short music melody for every new booking ---------- */
+function soundReady(){ return !!(audioCtx && audioCtx.state === 'running'); }
+function paintSoundBar(){ const b = $('#soundBar'); if (b) b.hidden = soundReady() || $('#appView').hidden; }
 function unlockAudio(){
-  try { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === 'suspended') audioCtx.resume(); } catch {}
-}
-document.addEventListener('pointerdown', unlockAudio, {once:true});
-function beep(){
   try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume().then(paintSoundBar, () => {});
+    audioCtx.onstatechange = paintSoundBar;
+  } catch {}
+  paintSoundBar();
+}
+document.addEventListener('pointerdown', unlockAudio);
+document.addEventListener('keydown', unlockAudio);
+
+/* ---------- Arabic-style melody (original): maqam Hijaz on D, oud-like plucks, maqsum darbuka ---------- */
+let noiseBuf = null, lastMusicAt = 0;
+function noiseBuffer(){
+  if (noiseBuf && noiseBuf.sampleRate === audioCtx.sampleRate) return noiseBuf;
+  const b = audioCtx.createBuffer(1, Math.floor(audioCtx.sampleRate * 0.5), audioCtx.sampleRate);
+  const d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  return (noiseBuf = b);
+}
+function oud(freq, start, len, out, vol){                       // plucked string (oud-like)
+  const ctx = audioCtx;
+  const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.Q.value = 1.1;
+  f.frequency.setValueAtTime(Math.min(4200, freq * 7), start);
+  f.frequency.exponentialRampToValueAtTime(Math.max(450, freq * 1.8), start + Math.min(len, 0.5));
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.0001, start);
+  g.gain.exponentialRampToValueAtTime(vol, start + 0.006);
+  g.gain.exponentialRampToValueAtTime(vol * 0.32, start + 0.13);
+  g.gain.exponentialRampToValueAtTime(0.0001, start + len + 0.32);
+  const o1 = ctx.createOscillator(); o1.type = 'sawtooth'; o1.frequency.value = freq;
+  const o2 = ctx.createOscillator(); o2.type = 'triangle'; o2.frequency.value = freq * 1.004;
+  const m2 = ctx.createGain(); m2.gain.value = 0.55;
+  o1.connect(f); o2.connect(m2); m2.connect(f); f.connect(g); g.connect(out);
+  o1.start(start); o2.start(start); o1.stop(start + len + 0.4); o2.stop(start + len + 0.4);
+}
+function tremolo(freq, start, len, out, vol){                   // risha tremolo on long notes
+  for (let t = 0, k = 0; t < len; t += 0.075, k++) oud(freq, start + t, 0.09, out, vol * (k ? 0.55 : 1) * (1 - t / (len * 1.6)));
+}
+function doum(t, out, vol){                                     // low darbuka stroke
+  const ctx = audioCtx;
+  const o = ctx.createOscillator(); o.type = 'sine';
+  o.frequency.setValueAtTime(115, t); o.frequency.exponentialRampToValueAtTime(52, t + 0.28);
+  const g = ctx.createGain(); g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(vol, t + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.42);
+  o.connect(g); g.connect(out); o.start(t); o.stop(t + 0.45);
+}
+function tek(t, out, vol){                                      // high darbuka stroke
+  const ctx = audioCtx;
+  const n = ctx.createBufferSource(); n.buffer = noiseBuffer();
+  const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 2600;
+  const g = ctx.createGain(); g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(vol, t + 0.003); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.07);
+  n.connect(hp); hp.connect(g); g.connect(out); n.start(t); n.stop(t + 0.09);
+}
+function playMusic(force){
+  try {
+    unlockAudio();
     if (!audioCtx) return;
-    [0, .18].forEach((t, i) => {
-      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-      o.type = 'sine'; o.frequency.value = i ? 1046 : 784;
-      g.gain.setValueAtTime(.0001, audioCtx.currentTime + t);
-      g.gain.exponentialRampToValueAtTime(.25, audioCtx.currentTime + t + .02);
-      g.gain.exponentialRampToValueAtTime(.0001, audioCtx.currentTime + t + .16);
-      o.connect(g).connect(audioCtx.destination); o.start(audioCtx.currentTime + t); o.stop(audioCtx.currentTime + t + .18);
+    if (!force && audioCtx.currentTime - lastMusicAt < 9 && lastMusicAt) return;   // no overlap when bookings arrive together
+    const ctx = audioCtx, t0 = ctx.currentTime + 0.06;
+    lastMusicAt = ctx.currentTime;
+    const out = ctx.createGain(); out.gain.value = 1.0; out.connect(ctx.destination);
+    // light echo (hall)
+    const dl = ctx.createDelay(1.0); dl.delayTime.value = 0.19;
+    const fb = ctx.createGain(); fb.gain.value = 0.24;
+    const wet = ctx.createGain(); wet.gain.value = 0.22;
+    const mel = ctx.createGain(); mel.gain.value = 1.0;
+    mel.connect(out); mel.connect(dl); dl.connect(fb); fb.connect(dl); dl.connect(wet); wet.connect(out);
+
+    // soft drone (D + A)
+    [146.83, 220.00].forEach(fq => {
+      const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = fq;
+      const g = ctx.createGain(); g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.045, t0 + 0.8); g.gain.setValueAtTime(0.045, t0 + 9.0);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 10.6);
+      o.connect(g); g.connect(out); o.start(t0); o.stop(t0 + 10.7);
     });
+
+    // maqsum rhythm: D T . T D . T .  (eighth = 0.3 s), 4 bars
+    const E = 0.3;
+    for (let bar = 0; bar < 4; bar++) {
+      const b0 = t0 + bar * 8 * E;
+      [[0,'D'],[1,'T'],[3,'T'],[4,'D'],[6,'T']].forEach(([k, s2]) => s2 === 'D' ? doum(b0 + k * E, out, 0.55) : tek(b0 + k * E, out, 0.2));
+    }
+    doum(t0 + 32 * E, out, 0.6);                                 // final stroke
+
+    // melody in maqam Hijaz (D Eb F# G A Bb C D)
+    const N = {D4:293.66, Eb4:311.13, Fs4:369.99, G4:392.00, A4:440.00, Bb4:466.16, C5:523.25, D5:587.33};
+    const tune = [
+      ['D4',1],['Eb4',1],['Fs4',2],['G4',1],['Fs4',1],['Eb4',1],['D4',1],          // bar 1
+      ['A4',2],['G4',1],['Fs4',1],['G4',1],['A4',1],['Bb4',2],                     // bar 2
+      ['A4',1],['Bb4',1],['C5',1],['Bb4',1],['A4',1],['G4',1],['Fs4',2],           // bar 3
+      ['G4',1],['Fs4',1],['Eb4',1],['Fs4',.5],['Eb4',.5],['D4',4,'trem']           // bar 4 (resolve on D)
+    ];
+    let t = t0;
+    tune.forEach(([n, beats, kind]) => {
+      const len = beats * E;
+      if (kind === 'trem') tremolo(N[n], t, len, mel, 0.24); else oud(N[n], t, Math.max(0.25, len), mel, 0.26);
+      t += len;
+    });
+    oud(N.D5, t0 + 32 * E, 1.2, mel, 0.16);                      // final octave
   } catch {}
 }
+$('#soundBar').addEventListener('click', () => { unlockAudio(); playMusic(true); });
+
 function notifyNew(b){
-  beep();
-  if (navigator.vibrate) navigator.vibrate([120, 60, 120]);
+  playMusic();
+  if (navigator.vibrate) navigator.vibrate([300, 120, 300, 120, 600]);
   const t = document.createElement('div');
   t.className = 'toast';
   t.innerHTML = `<span class="ic"><i class="bi bi-bell-fill"></i></span><div><b>Ballan cusub · ${esc(b.booking_code)}</b><span>${esc(b.patient_name)} → ${esc(b.doctor_name)} · ${money(b.total)}</span></div>`;
@@ -668,7 +814,7 @@ function updateNotifIcon(){
   $('#notifBtn').innerHTML = `<i class="bi ${ok ? 'bi-bell-fill' : 'bi-bell-slash'}"></i>`;
 }
 $('#notifBtn').addEventListener('click', async () => {
-  unlockAudio();
+  unlockAudio(); playMusic(true);
   if (!('Notification' in window)) return swal({icon:'info', title:'Ogeysiisyo', text:'Browser-kan ma taageero ogeysiisyada. Codka iyo gariirka way shaqaynayaan.'});
   if (Notification.permission === 'granted') return swal({icon:'success', title:'Ogeysiisyadu way shidan yihiin', text:'Ballan kasta oo cusub cod ayaad maqli doontaa oo ogeysiis ayaa kuu imanaya.'});
   const p = await Notification.requestPermission(); updateNotifIcon();
@@ -683,15 +829,91 @@ setInterval(() => { if (!document.hidden && me && tab === 'bookings') $$('.bk-ti
 }); }, 60000);
 
 /* ================= TABS ================= */
-function switchTab(t){
+/* Dhakhaatiirta & Lacagta are password-locked (checked by the database, 2-hour unlock) */
+const LOCKED = ['doctors', 'payment'];
+const SECTION_NAME = {doctors:'Qaybta Dhakhaatiirta', payment:'Qaybta Lacagta'};
+let unlocked = {doctors:false, payment:false};
+function paintLocks(){ $$('[data-lock]').forEach(i => { i.hidden = !!unlocked[i.dataset.lock]; }); }
+const isLockErr = e => !!(e && (e.locked || /row-level security|permission denied|violates/i.test(e.message || '')));
+const lockedError = () => Object.assign(new Error('LOCKED'), {locked:true});
+
+async function askPassword(section){
+  const r = await Swal.fire({
+    title: SECTION_NAME[section],
+    html: '<span style="font-size:14px;color:#3B4262"><i class="bi bi-lock-fill"></i> Geli password-ka qaybtan</span>',
+    input: 'password', inputPlaceholder: 'Password',
+    inputAttributes: {autocapitalize:'off', autocorrect:'off', autocomplete:'off'},
+    showCancelButton: true, confirmButtonText: 'Fur', cancelButtonText: 'Jooji', confirmButtonColor: '#24318F',
+    showLoaderOnConfirm: true,
+    allowOutsideClick: () => !Swal.isLoading(),
+    preConfirm: async pw => {
+      if (!pw) { Swal.showValidationMessage('Geli password-ka'); return false; }
+      const {data, error} = await sb.rpc('kaafi_unlock_section', {p_section:section, p_password:pw});
+      if (error) { Swal.showValidationMessage(errMsg(error)); return false; }
+      if (!data || !data.ok) { Swal.showValidationMessage((data && data.error) || 'Password-ka waa khalad.'); return false; }
+      return true;
+    }
+  });
+  if (r.isConfirmed) { unlocked[section] = true; paintLocks(); return true; }
+  return false;
+}
+function relock(section, msg){
+  unlocked[section] = false; paintLocks();
+  return swal({icon:'warning', title:'Qaybta waa la xiray', text:msg || 'Waqtigii furitaanka (2 saac) wuu dhacay. Geli password-ka mar kale.'})
+    .then(() => askPassword(section));
+}
+
+async function switchTab(t){
+  if (LOCKED.includes(t) && !unlocked[t]) { if (!(await askPassword(t))) return; }
   tab = t;
   $$('.tab').forEach(x => x.classList.toggle('on', x.dataset.tab === t));
   $('#tab-bookings').hidden = t !== 'bookings';
   $('#tab-doctors').hidden = t !== 'doctors';
+  $('#tab-payment').hidden = t !== 'payment';
   if (t === 'bookings') { unseen = 0; updateBadge(); }
+  if (t === 'payment') loadPayNumber();
   window.scrollTo({top:0, behavior:'smooth'});
 }
 $$('.tab').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+
+/* ================= PAYMENT NUMBER ================= */
+let payNumber = '';
+async function loadPayNumber(){
+  const {data, error} = await sb.rpc('kaafi_pay_number');
+  if (error) { $('#payNow').textContent = '—'; return; }
+  payNumber = String(data || '');
+  $('#payNow').textContent = payNumber;
+  $('#payUssd').textContent = `*789*${payNumber}*8#`;
+}
+$('#payInput').addEventListener('input', e => {
+  const v = e.target.value.replace(/\D/g, '').slice(0, 12);
+  if (e.target.value !== v) e.target.value = v;
+  $('#payHint').textContent = v
+    ? `Lambarka cusub kadib, bukaanku wuxuu wacayaa: *789*${v}*WADARTA#`
+    : 'Bukaanku markuu bixinayo wuxuu wacayaa: *789*LAMBARKA*WADARTA#';
+});
+$('#paySave').addEventListener('click', async () => {
+  const v = $('#payInput').value.replace(/\D/g, '');
+  if (v.length < 4 || v.length > 12) return swal({icon:'warning', title:'Lambar sax ah geli', text:'Lambarku waa inuu ahaadaa 4 ilaa 12 tiro.'});
+  if (v === payNumber) return swal({icon:'info', title:'Lambarkan ayaa hadda jira'});
+  const c = await Swal.fire({icon:'question', title:'Beddel lambarka lacagta?',
+    html:`<b>${esc(payNumber)}</b> &rarr; <b>${esc(v)}</b><br><small>Ballamaha cusub oo dhan lacagtooda waxay u dhacaysaa lambarka cusub.</small>`,
+    showCancelButton:true, confirmButtonText:'Haa, beddel', cancelButtonText:'Maya', confirmButtonColor:'#24318F'});
+  if (!c.isConfirmed) return;
+  const btn = $('#paySave'); btn.disabled = true; const old = btn.innerHTML; btn.innerHTML = '<span class="spin"></span> Waa la kaydinayaa…';
+  try {
+    const {data, error} = await sb.rpc('kaafi_set_pay_number', {p_number:v});
+    if (error) throw error;
+    if (data && data.locked) { await relock('payment', data.error); return; }
+    if (!data || !data.ok) throw new Error((data && data.error) || 'Lama kaydin');
+    $('#payInput').value = '';
+    $('#payHint').textContent = 'Bukaanku markuu bixinayo wuxuu wacayaa: *789*LAMBARKA*WADARTA#';
+    await loadPayNumber();
+    Swal.fire({icon:'success', title:'Lambarka waa la beddelay', text:`Lacagta hadda waxay u dhacaysaa ${data.pay_number}`, timer:1800, showConfirmButton:false});
+  } catch (err) {
+    swal({icon:'error', title:'Lama kaydin', text:errMsg(err)});
+  } finally { btn.disabled = false; btn.innerHTML = old; }
+});
 
 /* ================= DOCTORS ================= */
 async function loadDoctors(){
@@ -816,8 +1038,9 @@ $('#docForm').addEventListener('submit', async e => {
       const {data, error} = await sb.from('kaafi_doctors').insert(payload).select().single();
       if (error) throw error; doc = data;
     } else {
-      const {error} = await sb.from('kaafi_doctors').update(payload).eq('id', doc.id);
+      const {data:upd, error} = await sb.from('kaafi_doctors').update(payload).eq('id', doc.id).select('id');
       if (error) throw error;
+      if (!upd || !upd.length) throw lockedError();
     }
     const oldPath = editing?.photo_path || null;
     if (newPhoto) {
@@ -825,30 +1048,36 @@ $('#docForm').addEventListener('submit', async e => {
       const {error:upErr} = await sb.storage.from(CFG.bucket).upload(path, newPhoto, {contentType:'image/jpeg', cacheControl:'31536000', upsert:false});
       if (upErr) throw upErr;
       const {data:pub} = sb.storage.from(CFG.bucket).getPublicUrl(path);
-      const {error} = await sb.from('kaafi_doctors').update({photo_url:pub.publicUrl, photo_path:path}).eq('id', doc.id);
+      const {data:upd, error} = await sb.from('kaafi_doctors').update({photo_url:pub.publicUrl, photo_path:path}).eq('id', doc.id).select('id');
       if (error) throw error;
+      if (!upd || !upd.length) throw lockedError();
       if (oldPath) sb.storage.from(CFG.bucket).remove([oldPath]).catch(() => {});
     } else if (removePhoto && editing?.photo_url) {
-      const {error} = await sb.from('kaafi_doctors').update({photo_url:null, photo_path:null}).eq('id', doc.id);
+      const {data:upd, error} = await sb.from('kaafi_doctors').update({photo_url:null, photo_path:null}).eq('id', doc.id).select('id');
       if (error) throw error;
+      if (!upd || !upd.length) throw lockedError();
       if (oldPath) sb.storage.from(CFG.bucket).remove([oldPath]).catch(() => {});
     }
     closeDoc();
     await loadDoctors();
     Swal.fire({icon:'success', title:'Waa la kaydiyay', timer:1300, showConfirmButton:false});
   } catch (err) {
-    swal({icon:'error', title:'Lama kaydin', text:errMsg(err)});
+    if (isLockErr(err)) relock('doctors');
+    else swal({icon:'error', title:'Lama kaydin', text:errMsg(err)});
   } finally { btn.disabled = false; btn.innerHTML = old; }
 });
 
 $('#docDelete').addEventListener('click', async () => {
   if (!editing) return;
-  const r = await Swal.fire({icon:'warning', title:'Tirtir dhakhtarkan?', html:`<b>${esc(editing.full_name)}</b><br><small>Ballamihii hore way jiri doonaan. Haddii aad rabto inaad ku qariso oo kaliya, dami “Ka muuji bogga dadweynaha”.</small>`, showCancelButton:true, confirmButtonText:'Haa, tirtir', cancelButtonText:'Maya', confirmButtonColor:'#E1262D'});
-  if (!r.isConfirmed) return;
-  const {error} = await sb.from('kaafi_doctors').delete().eq('id', editing.id);
+  const doc = editing;
+  const ok = await askDeletePassword('Tirtir dhakhtarkan?', `<b>${esc(doc.full_name)}</b><br><small>Ballamihii hore way jiri doonaan. Haddii aad rabto inaad qariso oo kaliya, dami “Ka muuji bogga dadweynaha”.</small>`);
+  if (!ok) return;
+  const {data, error} = await sb.from('kaafi_doctors').delete().eq('id', doc.id).select('id');
   if (error) return swal({icon:'error', title:'Lama tirtirin', text:errMsg(error)});
-  if (editing.photo_path) sb.storage.from(CFG.bucket).remove([editing.photo_path]).catch(() => {});
-  closeDoc(); loadDoctors();
+  if (!data || !data.length) { relock('doctors'); return; }
+  if (doc.photo_path) sb.storage.from(CFG.bucket).remove([doc.photo_path]).catch(() => {});
+  closeDoc(); await loadDoctors();
+  Swal.fire({icon:'success', title:'Dhakhtarka waa la tirtiray', timer:1300, showConfirmButton:false});
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#docModal').hidden) closeDoc(); });
 
