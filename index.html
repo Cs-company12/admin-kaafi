@@ -151,6 +151,12 @@ select.in{padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmln
 .pt .av{width:40px;height:40px;border-radius:12px;background:var(--navy-l);color:var(--navy);display:grid;place-items:center;font-weight:800;flex:none}
 .pt h3{margin:0;font-size:16px;line-height:1.25;word-break:break-word}
 .pt p{margin:1px 0 0;font-size:13px;color:var(--ink-2)}
+.copy-line{display:inline-flex;align-items:center;gap:4px;vertical-align:middle}
+.copy-btn{width:26px;height:26px;border:0;border-radius:7px;background:var(--gray-l);color:var(--ink-2);display:inline-grid;place-items:center;flex:none;font-size:12px;cursor:pointer}
+.copy-btn:hover{background:var(--navy-l);color:var(--navy)}
+.copy-btn:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+.pt-info{min-width:0}
+.patient-meta{display:flex;align-items:center;flex-wrap:wrap;gap:2px 7px}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
 .tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:4px 9px;border-radius:8px;background:var(--gray-l);color:var(--ink-2)}
 .tag.id{background:var(--navy-l);color:var(--navy)}
@@ -433,6 +439,7 @@ let unseen = 0;
 let channel = null;
 let audioCtx = null;
 let tab = 'bookings';
+let downloads = null;      // app download totals (admins only)
 
 /* ================= AUTH ================= */
 // Username → internal account email (the password is checked by Supabase Auth; only a bcrypt hash is stored in the database)
@@ -482,7 +489,7 @@ async function logout(){
   unlocked = {doctors:false, payment:false}; paintLocks();
   if (tab !== 'bookings') switchTab('bookings');
   await sb.auth.signOut();
-  me = null; bookings = []; doctors = [];
+  me = null; bookings = []; doctors = []; downloads = null;
   $('#lPass').value = '';
   showAuth();
 }
@@ -503,6 +510,7 @@ function enterApp(){
   $('#whoami').textContent = me?.user_metadata?.username || me?.user_metadata?.full_name || (me?.email || '').split('@')[0];
   renderStats(); $('#blist').innerHTML = Array.from({length:3}, () => '<div class="skel"></div>').join('');
   loadDoctors().then(loadBookings);
+  loadDownloads();
   subscribe();
   updateNotifIcon();
   setTimeout(paintSoundBar, 300);
@@ -551,7 +559,17 @@ function renderStats(){
     <div class="stat"><span class="ic navy"><i class="bi bi-calendar2-check"></i></span><div><b>${list.length}</b><span>Ballamaha ${lbl}</span></div></div>
     <div class="stat"><span class="ic amber"><i class="bi bi-hourglass-split"></i></span><div><b>${pending}</b><span>Sugaya</span></div></div>
     <div class="stat"><span class="ic green"><i class="bi bi-cash-coin"></i></span><div><b>${paidL.length}</b><span>La bixiyay</span></div></div>
-    <div class="stat"><span class="ic red"><i class="bi bi-wallet2"></i></span><div><b>${money(income)}</b><span>Lacagta la bixiyay</span></div></div>`;
+    <div class="stat"><span class="ic red"><i class="bi bi-wallet2"></i></span><div><b>${money(income)}</b><span>Lacagta la bixiyay</span></div></div>` +
+    (downloads ? `
+    <div class="stat" style="grid-column:1/-1"><span class="ic navy"><i class="bi bi-download"></i></span><div><b>${Number(downloads.total) || 0}</b><span>App-ka la soo dejiyay (Downloads) · Android ${Number(downloads.android) || 0} · iPhone ${Number(downloads.ios) || 0} · Kombiyuutar ${Number(downloads.desktop) || 0} · Todobaadkan +${Number(downloads.week) || 0}</span></div></div>` : '');
+}
+
+/* Download count — only admins (checked by the database in kaafi_download_stats) */
+async function loadDownloads(){
+  try {
+    const {data, error} = await sb.rpc('kaafi_download_stats');
+    if (!error && data && typeof data === 'object') { downloads = data; renderStats(); }
+  } catch {}
 }
 
 function bookingCard(b){
@@ -567,7 +585,11 @@ function bookingCard(b){
     <div class="bk-body">
       <div class="pt">
         <span class="av">${esc(initials(b.patient_name))}</span>
-        <div><h3>${esc(b.patient_name)}</h3><p>${esc(b.patient_age)} sano${b.patient_sex ? ' · ' + (b.patient_sex === 'rag' ? 'Rag' : 'Dumar') : ''} · <i class="bi bi-geo-alt"></i> ${esc(b.district)}</p></div>
+        <div class="pt-info"><h3><span class="copy-line">${esc(b.patient_name)}<button type="button" class="copy-btn" data-copy="${esc(b.patient_name)}" data-copy-label="patient name" title="Copy patient name" aria-label="Copy patient name"><i class="bi bi-clipboard"></i></button></span></h3><p class="patient-meta">
+          <span class="copy-line">${esc(b.patient_age)} sano<button type="button" class="copy-btn" data-copy="${esc(b.patient_age)} sano" data-copy-label="patient age" title="Copy patient age" aria-label="Copy patient age"><i class="bi bi-clipboard"></i></button></span>
+          ${b.patient_sex ? `<span class="copy-line">${b.patient_sex === 'rag' ? 'Rag' : 'Dumar'}<button type="button" class="copy-btn" data-copy="${b.patient_sex === 'rag' ? 'Rag' : 'Dumar'}" data-copy-label="patient sex" title="Copy patient sex" aria-label="Copy patient sex"><i class="bi bi-clipboard"></i></button></span>` : ''}
+          <span class="copy-line"><i class="bi bi-geo-alt"></i> ${esc(b.district)}<button type="button" class="copy-btn" data-copy="${esc(b.district)}" data-copy-label="district" title="Copy district" aria-label="Copy district"><i class="bi bi-clipboard"></i></button></span>
+        </p></div>
       </div>
       <div class="tags">
         ${b.came_before === true ? `<span class="tag id"><i class="bi bi-arrow-repeat"></i> Horay u yimid: Haa</span>` : b.came_before === false ? `<span class="tag newp"><i class="bi bi-stars"></i> Horay u yimid: Maya</span>` : ''}
@@ -575,6 +597,7 @@ function bookingCard(b){
       </div>
       <div class="contact">
         <a class="ph" href="tel:${esc(b.patient_phone)}"><i class="bi bi-telephone muted"></i> ${esc(b.patient_phone)}</a>
+        <button type="button" class="copy-btn" data-copy="${esc(b.patient_phone)}" data-copy-label="patient phone" title="Copy patient phone" aria-label="Copy patient phone"><i class="bi bi-clipboard"></i></button>
         <a class="icon-btn sm" href="tel:${esc(b.patient_phone)}" aria-label="Wac"><i class="bi bi-telephone-fill"></i></a>
         <a class="icon-btn sm green" href="${wa}" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
       </div>
@@ -641,6 +664,28 @@ $('#blist').addEventListener('click', async e => {
   Swal.fire({icon:'success', title:'Waa la tirtiray', timer:1200, showConfirmButton:false});
 });
 
+async function copyText(text){
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+    const input = document.createElement('textarea');
+    input.value = text; input.style.position = 'fixed'; input.style.opacity = '0';
+    document.body.appendChild(input); input.select();
+    const copied = document.execCommand('copy'); input.remove();
+    return copied;
+  } catch { return false; }
+}
+$('#blist').addEventListener('click', async e => {
+  const button = e.target.closest('[data-copy]'); if (!button) return;
+  const copied = await copyText(button.dataset.copy);
+  if (!copied) { button.title = 'Copy failed'; return; }
+  const icon = button.innerHTML, title = button.title;
+  button.innerHTML = '<i class="bi bi-check2"></i>'; button.title = 'Copied';
+  setTimeout(() => { if (button.isConnected) { button.innerHTML = icon; button.title = title; } }, 1000);
+});
+
 /* filters */
 $('#fq').addEventListener('input', e => { fq = e.target.value; renderBookings(); });
 $('#fStatus').addEventListener('change', e => { fStatus = e.target.value; renderBookings(); });
@@ -656,8 +701,8 @@ $('#fRange').addEventListener('click', e => {
 $('#csvBtn').addEventListener('click', () => {
   const list = filtered();
   if (!list.length) return swal({icon:'info', title:'Wax la soo dejiyo ma jiro'});
-  const head = ['Koodh','Taariikh','Saac','Bukaan','Da\'','Taleefan','Degmo','Jinsi','Horay u yimid','Dhakhtar','Takhasus','Lacag dhakhtar','Khidmad ballan','Wadar','Xaalad','wakhtiga dalabka'];
-  const rows = list.map(b => [b.booking_code, new Date(b.created_at).toLocaleDateString('en-GB'), timeFmt(b.created_at), b.patient_name, b.patient_age, b.patient_phone, b.district, b.patient_sex === 'rag' ? 'Rag' : b.patient_sex === 'dumar' ? 'Dumar' : '', b.came_before === true ? 'Haa' : b.came_before === false ? 'Maya' : '', b.doctor_name, b.doctor_specialty, num(b.doctor_fee), num(b.booking_fee), num(b.total), (STATUS[b.status] || {}).so, b.payment_dialed_at ? `${dateFmt(b.payment_dialed_at)} ${timeFmt(b.payment_dialed_at)}` : '']);
+  const head = ['Koodh','Taariikh','Saac','Bukaan','Da\'','Taleefan','Degmo','Jinsi','Horay u yimid','Dhakhtar','Takhasus','Lacag dhakhtar','Khidmad ballan','Wadar','Xaalad','EVC la riixay'];
+  const rows = list.map(b => [b.booking_code, new Date(b.created_at).toLocaleDateString('en-GB'), timeFmt(b.created_at), b.patient_name, b.patient_age, b.patient_phone, b.district, b.patient_sex === 'rag' ? 'Rag' : b.patient_sex === 'dumar' ? 'Dumar' : '', b.came_before === true ? 'Haa' : b.came_before === false ? 'Maya' : '', b.doctor_name, b.doctor_specialty, num(b.doctor_fee), num(b.booking_fee), num(b.total), (STATUS[b.status] || {}).so, b.payment_dialed_at ? timeFmt(b.payment_dialed_at) : '']);
   const csv = '﻿' + [head, ...rows].map(r => r.map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',')).join('\r\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
@@ -825,8 +870,9 @@ $('#notifBtn').addEventListener('click', async () => {
   if (p === 'granted') swal({icon:'success', title:'Waa la shiday'});
 });
 document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && me && !$('#appView').hidden) { loadBookings(); if (tab === 'bookings') { unseen = 0; updateBadge(); } }
+  if (!document.hidden && me && !$('#appView').hidden) { loadBookings(); loadDownloads(); if (tab === 'bookings') { unseen = 0; updateBadge(); } }
 });
+setInterval(() => { if (!document.hidden && me && !$('#appView').hidden) loadDownloads(); }, 300000);
 setInterval(() => { if (!document.hidden && me && tab === 'bookings') $$('.bk-time').forEach(el => {
   const b = bookings.find(x => x.id === el.closest('.bk').dataset.id);
   if (b) el.textContent = `${range === 'today' ? '' : dateFmt(b.created_at) + ' · '}${timeFmt(b.created_at)} · ${ago(b.created_at)}`;
@@ -1010,11 +1056,10 @@ async function processPhoto(file, verticalPosition = 0.2){
   const img = await loadImage(file);
   const W = 640, H = 800, target = W / H;
   const iw = img.naturalWidth, ih = img.naturalHeight;
-  let sw, sh;
-  if (iw / ih > target) { sh = ih; sw = ih * target; }
-  else { sw = iw; sh = iw / target; }
-  const sx = (iw - sw) / 2;
-  const sy = (ih - sh) * verticalPosition;
+  let sw, sh, sx, sy;
+  if (iw / ih > target) { sh = ih; sw = ih * target; sx = (iw - sw) / 2; }
+  else { sw = iw; sh = iw / target; sx = 0; }
+  sy = (ih - sh) * verticalPosition;
   const c = document.createElement('canvas'); c.width = W; c.height = H;
   const ctx = c.getContext('2d'); ctx.imageSmoothingQuality = 'high';
   ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H);
