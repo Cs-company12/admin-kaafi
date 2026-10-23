@@ -344,7 +344,7 @@ select.in{padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmln
       <div class="paycard">
         <div class="paynow"><span>Lambarka hadda</span><b id="payNow">…</b><code id="payUssd">*789*…*8#</code></div>
         <div class="field"><label for="payInput">Lambar cusub</label><input class="in" id="payInput" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="Tusaale: 736275"></div>
-        <p class="hint" id="payHint">Bukaanku markuu bixinayo wuxuu wacayaa: *789*LAMBARKA*WADARTA#</p>
+        <p class="hint" id="payHint">Bukaanku markuu bixinayo lacagta waxa oo kudiraya: *789*LAMBARKA*WADARTA#</p>
         <button class="btn btn-primary btn-block" id="paySave"><i class="bi bi-check2"></i> Kaydi lambarka</button>
       </div>
     </section>
@@ -940,8 +940,8 @@ $('#payInput').addEventListener('input', e => {
   const v = e.target.value.replace(/\D/g, '').slice(0, 12);
   if (e.target.value !== v) e.target.value = v;
   $('#payHint').textContent = v
-    ? `Lambarka cusub kadib, bukaanku wuxuu wacayaa: *789*${v}*WADARTA#`
-    : 'Bukaanku markuu bixinayo wuxuu wacayaa: *789*LAMBARKA*WADARTA#';
+    ? `Lambarka cusub kadib, bukaanku wuxuu lacagta kudiraya: *789*${v}*WADARTA#`
+    : 'Bukaanku markuu bixinayo wuxuulacagta kudiraya: *789*LAMBARKA*WADARTA#';
 });
 $('#paySave').addEventListener('click', async () => {
   const v = $('#payInput').value.replace(/\D/g, '');
@@ -958,7 +958,7 @@ $('#paySave').addEventListener('click', async () => {
     if (data && data.locked) { await relock('payment', data.error); return; }
     if (!data || !data.ok) throw new Error((data && data.error) || 'Lama kaydin');
     $('#payInput').value = '';
-    $('#payHint').textContent = 'Bukaanku markuu bixinayo wuxuu wacayaa: *789*LAMBARKA*WADARTA#';
+    $('#payHint').textContent = 'Bukaanku markuu bixinayo wuxuulacagta kudiraya: *789*LAMBARKA*WADARTA#';
     await loadPayNumber();
     Swal.fire({icon:'success', title:'Lambarka waa la beddelay', text:`Lacagta hadda waxay u dhacaysaa ${data.pay_number}`, timer:1800, showConfirmButton:false});
   } catch (err) {
