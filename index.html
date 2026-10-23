@@ -150,14 +150,17 @@ select.in{padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmln
 .bk-body{padding:12px 14px;display:grid;gap:10px;flex:1}
 .pt{display:flex;align-items:flex-start;gap:10px}
 .pt .av{width:40px;height:40px;border-radius:12px;background:var(--navy-l);color:var(--navy);display:grid;place-items:center;font-weight:800;flex:none}
-.pt h3{margin:0;font-size:16px;line-height:1.25;word-break:break-word}
+.pt h3{margin:0;font-size:18px;font-weight:800;line-height:1.25;text-transform:uppercase;word-break:break-word}
 .pt p{margin:1px 0 0;font-size:13px;color:var(--ink-2)}
 .copy-line{display:inline-flex;align-items:center;gap:4px;vertical-align:middle}
 .copy-btn{width:26px;height:26px;border:0;border-radius:7px;background:var(--gray-l);color:var(--ink-2);display:inline-grid;place-items:center;flex:none;font-size:12px;cursor:pointer}
 .copy-btn:hover{background:var(--navy-l);color:var(--navy)}
 .copy-btn:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
 .pt-info{min-width:0}
-.patient-meta{display:flex;align-items:center;flex-wrap:wrap;gap:2px 7px}
+.patient-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:6px!important}
+.patient-fact{display:inline-flex;align-items:center;gap:5px;min-height:30px;padding:3px 7px;border-radius:8px;background:var(--bg);color:var(--ink-2);font-size:12px}
+.patient-fact-label{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase}
+.patient-fact .copy-btn{width:24px;height:24px}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
 .tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:4px 9px;border-radius:8px;background:var(--gray-l);color:var(--ink-2)}
 .tag.id{background:var(--navy-l);color:var(--navy)}
@@ -576,6 +579,8 @@ async function loadDownloads(){
 function bookingCard(b){
   const st = STATUS[b.status] || STATUS.pending;
   const isNew = newIds.has(b.id);
+  const sex = b.patient_sex === 'rag' || b.patient_sex === 'male' ? 'Male'
+    : b.patient_sex === 'dumar' || b.patient_sex === 'female' ? 'Female' : '';
   const wa = `https://wa.me/${intlPhone(b.patient_phone)}?text=${encodeURIComponent(`Asc ${b.patient_name}, waa Kaafi Hospital. Ballantaada ${b.booking_code} ee ${b.doctor_name} waa la helay.`)}`;
   return `<article class="bk st-${b.status} ${isNew ? 'is-new' : ''}" data-id="${b.id}">
     <div class="bk-top">
@@ -586,11 +591,11 @@ function bookingCard(b){
     <div class="bk-body">
       <div class="pt">
         <span class="av">${esc(initials(b.patient_name))}</span>
-        <div class="pt-info"><h3><span class="copy-line">${esc(b.patient_name)}<button type="button" class="copy-btn" data-copy="${esc(b.patient_name)}" data-copy-label="patient name" title="Copy patient name" aria-label="Copy patient name"><i class="bi bi-clipboard"></i></button></span></h3><p class="patient-meta">
-          <span class="copy-line">${esc(b.patient_age)} sano<button type="button" class="copy-btn" data-copy="${esc(b.patient_age)} sano" data-copy-label="patient age" title="Copy patient age" aria-label="Copy patient age"><i class="bi bi-clipboard"></i></button></span>
-          ${b.patient_sex ? `<span class="copy-line">${b.patient_sex === 'rag' ? 'Rag' : 'Dumar'}<button type="button" class="copy-btn" data-copy="${b.patient_sex === 'rag' ? 'Rag' : 'Dumar'}" data-copy-label="patient sex" title="Copy patient sex" aria-label="Copy patient sex"><i class="bi bi-clipboard"></i></button></span>` : ''}
-          <span class="copy-line"><i class="bi bi-geo-alt"></i> ${esc(b.district)}<button type="button" class="copy-btn" data-copy="${esc(b.district)}" data-copy-label="district" title="Copy district" aria-label="Copy district"><i class="bi bi-clipboard"></i></button></span>
-        </p></div>
+        <div class="pt-info"><h3><span class="copy-line">${esc(b.patient_name)}<button type="button" class="copy-btn" data-copy="${esc(b.patient_name)}" data-copy-label="patient name" title="Copy patient name" aria-label="Copy patient name"><i class="bi bi-clipboard"></i></button></span></h3><div class="patient-meta">
+          <span class="patient-fact"><span class="patient-fact-label">Age</span>${esc(b.patient_age)} sano<button type="button" class="copy-btn" data-copy="${esc(b.patient_age)} sano" data-copy-label="patient age" title="Copy patient age" aria-label="Copy patient age"><i class="bi bi-clipboard"></i></button></span>
+          ${sex ? `<span class="patient-fact"><span class="patient-fact-label">Gender</span>${sex}<button type="button" class="copy-btn" data-copy="${sex}" data-copy-label="patient sex" title="Copy patient sex" aria-label="Copy patient sex"><i class="bi bi-clipboard"></i></button></span>` : ''}
+          <span class="patient-fact"><span class="patient-fact-label">District</span>${esc(b.district)}<button type="button" class="copy-btn" data-copy="${esc(b.district)}" data-copy-label="district" title="Copy district" aria-label="Copy district"><i class="bi bi-clipboard"></i></button></span>
+        </div></div>
       </div>
       <div class="tags">
         ${b.came_before === true ? `<span class="tag id"><i class="bi bi-arrow-repeat"></i> Horay u yimid: Haa</span>` : b.came_before === false ? `<span class="tag newp"><i class="bi bi-stars"></i> Horay u yimid: Maya</span>` : ''}
