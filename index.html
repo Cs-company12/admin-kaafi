@@ -299,6 +299,7 @@ select.in{padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmln
       <button class="tab on" data-tab="bookings"><i class="bi bi-people-fill"></i> Bukaannada <span class="badge" id="newBadge" hidden>0</span></button>
       <button class="tab" data-tab="doctors"><i class="bi bi-person-badge-fill"></i> Dhakhaatiirta <i class="bi bi-lock-fill lk" data-lock="doctors"></i></button>
       <button class="tab" data-tab="payment"><i class="bi bi-wallet2"></i> Lacagta <i class="bi bi-lock-fill lk" data-lock="payment"></i></button>
+      <button class="tab" data-tab="push"><i class="bi bi-bell-fill"></i> Ogeysiis</button>
     </div>
   </nav>
 
@@ -337,6 +338,21 @@ select.in{padding-right:36px;background:#fff url("data:image/svg+xml,%3Csvg xmln
         <button class="btn btn-red" id="addDoc"><i class="bi bi-plus-lg"></i> Ku dar</button>
       </div>
       <div class="dgrid" id="dgrid"></div>
+    </section>
+
+    <!-- PUSH -->
+    <section id="tab-push" hidden>
+      <div class="list-head" style="margin-top:4px">
+        <div><h2>Ogeysiis u dir dadka oo dhan</h2><span class="muted" style="font-size:13px" id="pushCount">…</span></div>
+      </div>
+      <div class="paycard">
+        <div class="field"><label for="pushTitle">Cinwaan</label><input class="in" id="pushTitle" maxlength="80" placeholder="Tusaale: 🩺 Dhakhtar cusub"></div>
+        <div class="field"><label for="pushBody">Qoraal</label><textarea class="in" id="pushBody" maxlength="240" rows="3" style="height:auto;padding:12px 14px" placeholder="Tusaale: Hadda ka ballan qabso app-ka Kaafi Hospital"></textarea></div>
+        <div class="field"><label for="pushUrl">Link (ikhtiyaari)</label><input class="in" id="pushUrl" maxlength="300" placeholder="Marka la taabto, halkee ka furmaa? (banaan = app-ka)"></div>
+        <div id="pushPrev" style="background:#f1f3fa;border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start"><span style="font-size:22px">🏥</span><div><b id="pvT">Cinwaan</b><div id="pvB" class="muted" style="font-size:13px">Qoraalka halkan ayuu ka muuqdaa</div></div></div>
+        <button class="btn btn-primary" id="pushSend"><i class="bi bi-send-fill"></i> Dir ogeysiiska</button>
+        <div id="pushHist" class="muted" style="font-size:13px"></div>
+      </div>
     </section>
 
     <!-- PAYMENT NUMBER -->
@@ -926,11 +942,47 @@ async function switchTab(t){
   $('#tab-bookings').hidden = t !== 'bookings';
   $('#tab-doctors').hidden = t !== 'doctors';
   $('#tab-payment').hidden = t !== 'payment';
+  $('#tab-push').hidden = t !== 'push';
+  if (t === 'push') loadPush();
   if (t === 'bookings') { unseen = 0; updateBadge(); }
   if (t === 'payment') loadPayNumber();
   window.scrollTo({top:0, behavior:'smooth'});
 }
 $$('.tab').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+
+
+/* ================= PUSH (OGEYSIIS) ================= */
+async function loadPush(){
+  const {data, error} = await sb.rpc('kaafi_push_stats');
+  if (error) { $('#pushCount').textContent = 'Lama akhriyi karo'; return; }
+  $('#pushCount').textContent = `${data.subscribers} qof ayaa ogeysiis heli kara (Android ${data.android} · iPhone ${data.ios} · Kombiyuutar ${data.desktop})`;
+  $('#pushHist').innerHTML = data.history.length
+    ? '<b>Kuwii u dambeeyay:</b><br>' + data.history.map(h => `${esc(h.title)} — ${h.sent}/${h.total} la gaaray · ${new Date(h.created_at).toLocaleString('so')}`).join('<br>')
+    : '';
+}
+['pushTitle','pushBody'].forEach(id => $('#'+id).addEventListener('input', () => {
+  $('#pvT').textContent = $('#pushTitle').value || 'Cinwaan';
+  $('#pvB').textContent = $('#pushBody').value || 'Qoraalka halkan ayuu ka muuqdaa';
+}));
+function adminChime(){ try { const ac = new (window.AudioContext||window.webkitAudioContext)(); [[880,0],[1319,.14]].forEach(([f,t])=>{const o=ac.createOscillator(),g=ac.createGain(),s=ac.currentTime+t;o.frequency.value=f;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(.3,s+.02);g.gain.exponentialRampToValueAtTime(.0001,s+.45);o.start(s);o.stop(s+.5);}); } catch {} }
+$('#pushSend').addEventListener('click', async () => {
+  const title = $('#pushTitle').value.trim(), body = $('#pushBody').value.trim(), url = $('#pushUrl').value.trim();
+  if (!title || !body) return swal({icon:'warning', title:'Cinwaan iyo qoraal geli'});
+  const ok = await Swal.fire({icon:'question', title:'Ma dirnaa dadka oo dhan?', text:'Qof kasta oo app-ka ogeysiiska u ogolaaday ayaa helaya.', showCancelButton:true, confirmButtonColor:'#24318F', confirmButtonText:'Haa, dir', cancelButtonText:'Maya'});
+  if (!ok.isConfirmed) return;
+  const btn = $('#pushSend'); btn.disabled = true;
+  try {
+    const {data, error} = await sb.functions.invoke('send-push', {body:{title, body, url}});
+    if (error) throw error;
+    adminChime();
+    await swal({icon:'success', title:'La diray', text:`${data.sent} ka mid ah ${data.total} ayaa la gaarsiiyay` + (data.removed ? ` (${data.removed} qalab duug ah ayaa la tirtiray)` : '')});
+    $('#pushTitle').value = $('#pushBody').value = $('#pushUrl').value = '';
+    $('#pushTitle').dispatchEvent(new Event('input')); $('#pushBody').dispatchEvent(new Event('input'));
+    loadPush();
+  } catch (e) {
+    swal({icon:'error', title:'Lama diri karin', text:String((e && e.message) || e)});
+  } finally { btn.disabled = false; }
+});
 
 /* ================= PAYMENT NUMBER ================= */
 let payNumber = '';
